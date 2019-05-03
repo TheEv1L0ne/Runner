@@ -9,41 +9,14 @@ public class PlayerController : MonoBehaviour
 
     public Transform modelRoot;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerAnimator.Play("RUN00_F");
-    }
+    bool isPaused = true;
+
 
     // Update is called once per frame
     void Update()
     {
 
-        this.transform.Translate(Vector3.forward * 0.2f);
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            //playerAnimator.Play("JUMP00B");
-            MovePlayerLeft();
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            //playerAnimator.Play("JUMP00B");
-            MovePlayerRight();
-        }
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            playerAnimator.Play("JUMP00");
-        }
-
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && !isPaused)
         {
             //startPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             startPos = Input.mousePosition;
@@ -52,7 +25,7 @@ public class PlayerController : MonoBehaviour
             startPos = Camera.main.ScreenToWorldPoint(startPos);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && !isPaused)
         {
 
 
@@ -61,6 +34,8 @@ public class PlayerController : MonoBehaviour
 
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
+            Debug.Log("Start: " + startPos);
+            Debug.Log("END: " + mousePos);
 
             if (startPos.x - mousePos.x < -2f)
             {
@@ -82,6 +57,44 @@ public class PlayerController : MonoBehaviour
 
         }
 
+    }
+
+    public void ResetGame()
+    {
+        //resets character position
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 3f);
+        isPaused = true;
+    }
+
+    public void StartGame()
+    {
+        playerAnimator.Play("RUN00_F");
+        isPaused = false;
+        MovePlayerForward();
+    }
+
+    public void PauseGame()
+    {
+        playerAnimator.Play("WAIT01");
+        isPaused = true;
+        StopAllCoroutines();
+    }
+
+
+    public void MovePlayerForward()
+    {
+        StartCoroutine(MovePlayerForwardCoroutine());
+    }
+
+    IEnumerator MovePlayerForwardCoroutine()
+    {
+        if (this.transform.position.z <= 441)
+            this.transform.Translate(Vector3.forward * 0.2f);
+        else
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 3f);
+
+        yield return null;
+        MovePlayerForward();
     }
 
     Vector3 startPos;

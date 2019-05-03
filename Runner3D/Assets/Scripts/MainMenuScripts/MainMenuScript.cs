@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class MainMenuScript : MonoBehaviour
@@ -17,6 +18,7 @@ public class MainMenuScript : MonoBehaviour
         //Starts sound when game is loaded if sound option is enabled
         if (PlayerPrefs.GetString(StaticStrings.SOUND_ON_OFF, "true") == "true")
         {
+            AudioManagerScript.instance_Sounds.StopAll();
             AudioManagerScript.instance_Sounds.PlaySound(StaticStrings.MAIN_MENU_SOUND_ID);
         }
 
@@ -48,7 +50,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void StartGame()
     {
-
+        SceneManager.LoadScene(1);
     }
 
     public void OpenOptions()

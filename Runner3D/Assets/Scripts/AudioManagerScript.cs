@@ -33,6 +33,14 @@ public class AudioManagerScript : MonoBehaviour
         
     }
 
+    public bool IsPlaying(int id)
+    {
+        if(sounds[id].isPlaying)
+            return true;
+
+        return false;
+    }
+
     public void PlaySound(int id)
     {
         sounds[id].Play();
