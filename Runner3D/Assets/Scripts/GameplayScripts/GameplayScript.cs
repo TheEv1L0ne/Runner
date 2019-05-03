@@ -57,6 +57,10 @@ public class GameplayScript : MonoBehaviour
 
     public void OpenPauseMenu()
     {
+
+        if (AudioManagerScript.instance_Sounds.IsPlaying(StaticStrings.RUN_SOUND_ID))
+            AudioManagerScript.instance_Sounds.StopSound(StaticStrings.RUN_SOUND_ID);
+
         pauseMenu.SetActive(true);
 
         three.SetActive(false);

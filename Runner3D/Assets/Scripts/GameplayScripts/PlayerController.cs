@@ -70,6 +70,13 @@ public class PlayerController : MonoBehaviour
     {
         playerAnimator.Play("RUN00_F");
         isPaused = false;
+
+        if (PlayerPrefs.GetString(StaticStrings.SOUND_ON_OFF, "true") == "true")
+        {
+            if (!AudioManagerScript.instance_Sounds.IsPlaying(StaticStrings.RUN_SOUND_ID))
+                AudioManagerScript.instance_Sounds.PlaySound(StaticStrings.RUN_SOUND_ID);
+        }
+
         MovePlayerForward();
     }
 
